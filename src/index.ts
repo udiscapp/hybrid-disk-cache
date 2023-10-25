@@ -65,7 +65,7 @@ class Cache {
   async get(key: string, defaultValue?: Buffer): Promise<Buffer | undefined> {
     const rv = this.db
       .prepare('SELECT value, filename FROM cache WHERE key = ?')
-      .get(key)
+      .get(key) as any
     if (!rv) return defaultValue
     if (rv && rv.filename) rv.value = read(this.path, rv.filename)
     return rv.value
@@ -73,14 +73,16 @@ class Cache {
 
   async has(key: string): Promise<CacheStatus> {
     const now = new Date().getTime() / 1000
-    const rv = this.db.prepare('SELECT ttl FROM cache WHERE key = ?').get(key)
+    const rv = this.db
+      .prepare('SELECT ttl FROM cache WHERE key = ?')
+      .get(key) as any
     return !rv ? 'miss' : rv.ttl > now ? 'hit' : 'stale'
   }
 
   async del(key: string) {
     const rv = this.db
       .prepare('SELECT filename FROM cache WHERE key = ?')
-      .get(key)
+      .get(key) as any
     this.db.prepare('DELETE FROM cache WHERE key = ?').run(key)
     this._delFile(rv?.filename)
   }
@@ -96,7 +98,7 @@ class Cache {
     const now = new Date().getTime() / 1000 - this.tbd
     const rows = this.db
       .prepare('SELECT key, filename FROM cache WHERE ttl < ?')
-      .all(now)
+      .all(now) as any
     this.db.prepare('DELETE FROM cache WHERE ttl < ?').run(now)
     for (const row of rows) this._delFile(row.filename)
     purgeEmptyPath(this.path)
