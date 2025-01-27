@@ -1,6 +1,6 @@
 {
   "name": "@udisc/hybrid-disk-cache",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "A hybrid disk cache utilize both the database and the file system.",
   "main": "dist/index.js",
   "scripts": {
@@ -25,11 +25,11 @@
   },
   "license": "MIT",
   "dependencies": {
-    "better-sqlite3": "^9.0.0",
+    "better-sqlite3": "^11.8.1",
     "fs-extra": "^10.0.0"
   },
   "devDependencies": {
-    "@types/better-sqlite3": "^7.6.6",
+    "@types/better-sqlite3": "^7.6.12",
     "@types/chai": "^4.2.12",
     "@types/fs-extra": "^9.0.1",
     "@types/mocha": "^9.0.0",
